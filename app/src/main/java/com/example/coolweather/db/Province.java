@@ -32,4 +32,5 @@ public class Province extends LitePalSupport {
         this.provinceCode = provinceCode;
     }
 
+
 }
