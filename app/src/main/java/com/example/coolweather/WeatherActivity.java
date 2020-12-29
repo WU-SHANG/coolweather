@@ -1,6 +1,9 @@
 package com.example.coolweather;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -42,6 +46,12 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView tv_sport_text;
     private ImageView iv_bing_pic;
 
+    public SwipeRefreshLayout swipeRefresh;
+    private String mWeatherId;
+
+    public DrawerLayout drawer_layout;
+    private Button btn_nav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +68,8 @@ public class WeatherActivity extends AppCompatActivity {
 
         initView();
 
+        swipeRefresh.setColorSchemeResources(R.color.design_default_color_primary);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         String bingPic = prefs.getString("bing_pic", null);
@@ -69,13 +81,27 @@ public class WeatherActivity extends AppCompatActivity {
         if (weatherString != null) {
             //有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
+            mWeatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
             //无缓存时去服务器查询天气
-            String weatherId = getIntent().getStringExtra("weather_id");
+            mWeatherId = getIntent().getStringExtra("weather_id");
             sv_weather_layout.setVisibility(View.INVISIBLE);
-            requestWeather(weatherId);
+            requestWeather(mWeatherId);
         }
+
+        //下拉刷新，重新请求服务器
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestWeather(mWeatherId);
+            }
+        });
+
+        btn_nav.setOnClickListener(v -> {
+            //打开滑动菜单
+            drawer_layout.openDrawer(GravityCompat.START);
+        });
     }
 
     private void initView() {
@@ -91,6 +117,9 @@ public class WeatherActivity extends AppCompatActivity {
         tv_car_wash_text = findViewById(R.id.tv_car_wash_text);
         tv_sport_text = findViewById(R.id.tv_sport_text);
         iv_bing_pic = findViewById(R.id.iv_bing_pic);
+        swipeRefresh = findViewById(R.id.swipe_refresh);
+        drawer_layout = findViewById(R.id.drawer_layout);
+        btn_nav = findViewById(R.id.btn_nav);
     }
 
     /**
@@ -104,7 +133,9 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(()->{
+                    e.printStackTrace();
                     Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
+                    swipeRefresh.setRefreshing(false);
                 });
             }
 
@@ -117,10 +148,12 @@ public class WeatherActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                         editor.putString("weather", responseText);
                         editor.apply();
+                        mWeatherId = weather.basic.weatherId;
                         showWeatherInfo(weather);
                     } else {
                         Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                     }
+                    swipeRefresh.setRefreshing(false);
                 });
             }
         });
