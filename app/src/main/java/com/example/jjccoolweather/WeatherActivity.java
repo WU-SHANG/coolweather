@@ -1,4 +1,4 @@
-package com.example.coolweather;
+package com.example.jjccoolweather;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -21,11 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.coolweather.gson.Forecast;
-import com.example.coolweather.gson.Weather;
-import com.example.coolweather.service.AutoUpdateService;
-import com.example.coolweather.util.HttpUtil;
-import com.example.coolweather.util.Utility;
+import com.example.jjccoolweather.gson.Forecast;
+import com.example.jjccoolweather.gson.Weather;
+import com.example.jjccoolweather.service.AutoUpdateService;
+import com.example.jjccoolweather.util.HttpUtil;
+import com.example.jjccoolweather.util.Utility;
 
 import java.io.IOException;
 

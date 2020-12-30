@@ -3,8 +3,8 @@
     <version value="1" />
 
     <list>
-        <mapping class="com.example.coolweather.db.Province" />
-        <mapping class="com.example.coolweather.db.City" />
-        <mapping class="com.example.coolweather.db.County" />
+        <mapping class="com.example.jjccoolweather.db.Province" />
+        <mapping class="com.example.jjccoolweather.db.City" />
+        <mapping class="com.example.jjccoolweather.db.County" />
     </list>
 </litepal>

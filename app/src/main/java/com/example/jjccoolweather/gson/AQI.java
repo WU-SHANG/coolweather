@@ -1,4 +1,4 @@
-package com.example.coolweather.gson;
+package com.example.jjccoolweather.gson;
 
 /**
  * 空气质量指数

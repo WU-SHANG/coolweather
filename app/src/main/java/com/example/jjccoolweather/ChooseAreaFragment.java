@@ -1,4 +1,4 @@
-package com.example.coolweather;
+package com.example.jjccoolweather;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,17 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.coolweather.db.City;
-import com.example.coolweather.db.County;
-import com.example.coolweather.db.Province;
-import com.example.coolweather.util.HttpUtil;
-import com.example.coolweather.util.Utility;
+import com.example.jjccoolweather.db.City;
+import com.example.jjccoolweather.db.County;
+import com.example.jjccoolweather.db.Province;
+import com.example.jjccoolweather.util.HttpUtil;
+import com.example.jjccoolweather.util.Utility;
 
 import org.litepal.LitePal;
-import org.litepal.crud.LitePalSupport;
 
 import java.io.IOException;
-import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.List;
 
